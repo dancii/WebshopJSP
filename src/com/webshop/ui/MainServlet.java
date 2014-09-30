@@ -3,6 +3,7 @@ package com.webshop.ui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,7 @@ public class MainServlet extends HttpServlet {
 			String legit = UserHandler.checkIfLegit(username, password);
 			
 			if(legit.equals("Error")){
-				session.setAttribute("loginFailed", "loginFailed");;
+				session.setAttribute("loginFailed", "loginFailed");
 				response.sendRedirect("login.jsp");
 			}else{
 				session.setAttribute("username", username);
@@ -61,10 +62,17 @@ public class MainServlet extends HttpServlet {
 		}else if(checkFunc.equals("register")){
 			
 		}else if(checkFunc.equals("searchItemByName")){
-			String searchItemByName=request.getParameter("searchItemName");
-			
+			String searchItemByName=request.getParameter("search");
 			ArrayList<ItemInfo> items = ItemHandler.getItemByName(searchItemByName);
-			request.setAttribute("itemsList", items);
+			if(items.isEmpty()){
+				System.out.println("Items empty");
+			}else{
+				request.setAttribute("itemsList", items);
+				RequestDispatcher rd=request.getRequestDispatcher("/search.jsp");
+				rd.forward(request,response);
+				response.sendRedirect("search.jsp");
+			}
+			
 		}
 		
 	}

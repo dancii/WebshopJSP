@@ -11,31 +11,30 @@ public class ItemDB extends Item{
 	
 	static Connection con = null;
 	static ResultSet rs = null;
-	ArrayList<Item> items=new ArrayList<Item>();
+	static ArrayList<Item> items=new ArrayList<Item>();
 
 	public ItemDB(int id, String category, String name, float price,String description) {
 		super(id, category, name, price, description);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ArrayList<Item> findItemByName(String name){
+	public static ArrayList<Item> getItemByName(String name){
 		Statement stmt=null;
-		
 		String searchQuery="SELECT * FROM products WHERE name LIKE '%"+name+"%'";
 		try{
 			con=DBManager.getConnection();
 			stmt=con.createStatement();
 			rs=stmt.executeQuery(searchQuery);
 			
-			boolean more = rs.next();
-			
-			while(more){
+			while(rs.next()){
 				items.add(new Item(rs.getInt("id"),rs.getString("category"),rs.getString("name"), rs.getFloat("price"),rs.getString("description")));
 			}
+			System.out.println(items.get(0).getName());
+			
 			
 			
 		}catch(Exception e){
-
+			System.out.println("DB fail ITEM");
 		}finally{
 		    if (rs != null)	{
 	            try {

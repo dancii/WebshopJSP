@@ -21,6 +21,7 @@ public class Item {
 	}
 
 	public static ArrayList<Item> getItemByName(String name){
+		System.out.println("Check name 2:" + name);
 		return ItemDB.getItemByName(name);
 	}
 	

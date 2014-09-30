@@ -62,12 +62,6 @@
                     <li>
                         <a href="#">Contact</a>
                     </li>
-                    <li>
-                    	<input type="text" name="search" >
-                    </li>
-                    <li>
-                    	<input type="submit" name="searchBtn" value="Search">
-                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -88,7 +82,13 @@
                     <a href="#" class="list-group-item">Category 3</a>
                 </div>
             </div>
-
+            <div class="col-md-4">
+            	<form action="MainServlet" method="POST">
+                 	<input type="text" name="search" >
+                 	<input type="submit" name="searchBtn" value="Search">
+					<input type="hidden" name="checkFunc" value="searchItemByName">
+                </form>
+			</div>
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
@@ -100,7 +100,6 @@
                 </div>
 
                 <div class="row">
-
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
                             <img src="http://placehold.it/320x150" alt="">
@@ -109,16 +108,6 @@
                                 <h4><a href="#">First Product</a>
                                 </h4>
                                 <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">15 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                </p>
                             </div>
                         </div>
                     </div>
