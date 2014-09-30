@@ -1,6 +1,7 @@
 package com.webshop.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.webshop.bo.ItemHandler;
+import com.webshop.bo.ItemInfo;
 import com.webshop.bo.UserHandler;
 
 /**
@@ -48,8 +51,8 @@ public class MainServlet extends HttpServlet {
 			String legit = UserHandler.checkIfLegit(username, password);
 			
 			if(legit.equals("Error")){
-				response.getOutputStream().print("NEEEEEEJ!!!!");
-				session=null;
+				session.setAttribute("loginFailed", "loginFailed");;
+				response.sendRedirect("login.jsp");
 			}else{
 				session.setAttribute("username", username);
 				session.setMaxInactiveInterval(60*15);
@@ -57,6 +60,11 @@ public class MainServlet extends HttpServlet {
 			}
 		}else if(checkFunc.equals("register")){
 			
+		}else if(checkFunc.equals("searchItemByName")){
+			String searchItemByName=request.getParameter("searchItemName");
+			
+			ArrayList<ItemInfo> items = ItemHandler.getItemByName(searchItemByName);
+			request.setAttribute("itemsList", items);
 		}
 		
 	}

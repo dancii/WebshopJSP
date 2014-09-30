@@ -1,9 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
-<% if(session.getAttribute("username")!=null){
-	response.sendRedirect("index.jsp");
-} %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
 
     <meta charset="utf-8">
@@ -47,8 +44,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                <%if(session.getAttribute("username")==null || session.getAttribute("username")==""){ %>
                 	<li>
                 		<a href="login.jsp">Login</a>
+                	</li>
+                <%}else{ %>
+                	<li>
+                		<a href="logout.jsp">Logout</a>
+                <%} %>
                 	</li>
                     <li>
                         <a href="#">About</a>
@@ -63,7 +66,7 @@
                     	<input type="text" name="search" >
                     </li>
                     <li>
-                    	<input type="submit" name="searchBtn">
+                    	<input type="submit" name="searchBtn" value="Search">
                     </li>
                 </ul>
             </div>
@@ -89,21 +92,43 @@
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
-	                <form action="MainServlet" method="POST">
-	                	<h1>LOGIN</h1>
-	                	<%if(session.getAttribute("loginFailed")=="loginFailed"){ %>
-	                	<h6>Login failed, please try again</h6>
-	                	<%} %>
-						<input type="text" name="username"><br>
-						<input type="password" name="password">
-						<input type="submit" name="login"><br>
-						<input type="hidden" name="checkFunc" value="login">
-						<a href="register.jsp">Register here!</a>
-	               	</form>
-               	</div>
-               	
+
+                    <div class="col-md-12">
+                        <h1>WELCOME TO OUR WEBSHOP</h1>
+                    </div>
+
+                </div>
+				<% %>
+                <div class="row">
+
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail">
+                            <img src="http://placehold.it/320x150" alt="">
+                            <div class="caption">
+                                <h4 class="pull-right">$94.99</h4>
+                                <h4><a href="#">Fifth Product</a>
+                                </h4>
+                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </div>
+                            <div class="ratings">
+                                <p class="pull-right">18 reviews</p>
+                                <p>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
     <!-- /.container -->
 
