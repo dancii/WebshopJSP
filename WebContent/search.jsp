@@ -1,6 +1,9 @@
 
 <%@page import="com.webshop.bo.ItemInfo" %>
 <%@page import="java.util.*" %>
+<%@page import="com.webshop.bo.Category" %>
+<%@page import="com.webshop.bo.CategoryHandler" %>
+<%@page import="com.webshop.bo.ShoppingCart" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +67,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="shoppingCart.jsp">Chopping cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -79,13 +82,28 @@
         <div class="row">
 
             <div class="col-md-3">
-                <p class="lead">Shop Name</p>
+                <p class="lead">Categories</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
-                </div>
-            </div>
+                  <%ArrayList<Category> categories= CategoryHandler.getAllCategories();
+					Iterator<Category> iter2 = categories.iterator();
+
+					while(iter2.hasNext()){
+						Category t = iter2.next();
+						
+					%>
+						<div class="list-group-item">
+						<form action="MainServlet" method="POST">
+								Search by <input type="submit" name="searchItemByCategory" value="<%= t.getCategory() %>">
+								<input type="hidden" name="itemId" value="<%= t.getId() %>">
+								<input type="hidden" name="itemName" value="<%= t.getCategory() %>">
+								<input type="hidden" name="checkFunc" value="findItemsByCategory">
+						</form>
+						</div>
+					<%
+					}
+					%>
+				</div>
+			</div>
             <div class="col-md-4">
             	<form action="MainServlet" method="POST">
                  	<input type="text" name="search" >
@@ -98,7 +116,7 @@
                 <div class="row carousel-holder">
 
                     <div class="col-md-12">
-                        <h1>WELCOME TO OUR WEBSHOP</h1>
+                        <h1>Search results</h1>
                     </div>
 
                 </div>
@@ -106,122 +124,42 @@
                 <div class="row">
 					<%
 					if(request.getAttribute("itemsList")==null){
-						System.out.println("EMPTY SHIT");
+						%>
+							<h5>Search result came back empty meanwhile...</h5>
+							<h7 style="font-color: red">How much wood would a woodchuck chuck if a woodchuck could chuck wood?</h7>
+						<%
 					}else{
-						System.out.println("IM INNNNN!!!");
-						ArrayList<ItemInfo> items= (ArrayList<ItemInfo>) request.getAttribute("itemList"); 
-						for(ItemInfo iteminfo : items){
+						ArrayList<ItemInfo> items= (ArrayList<ItemInfo>) request.getAttribute("itemsList");
+						System.out.println("supzzz: " + items.size());
+						Iterator iter = items.iterator();
+						int i = 0;
+							while(iter.hasNext()){
+								ItemInfo t = (ItemInfo) iter.next();
+								System.out.println("Supz: " + i);
 						%>
 		                    <div class="col-sm-4 col-lg-4 col-md-4">
 		                        <div class="thumbnail">
-		                            <img src="http://placehold.it/320x150" alt="">
 		                            <div class="caption">
-		                                <h4 class="pull-right"><%= iteminfo.getPrice() %></h4>
-		                                <h4><a href="#"><%out.print(iteminfo.getName()); %></a>
+		                                <h4 class="pull-right"><%= t.getPrice() %> &ETH</h4>
+		                                <h4><a href="#"><%= t.getName() %></a>
 		                                </h4>
-		                                <p><%out.print(iteminfo.getDescription()); %></p>
+		                                <p><%= t.getDescription() %></p>
+		                                <form action="MainServlet" method="POST">
+		                                	<input type="submit" name="buy" value="BUY">
+		                                	<input type="hidden" name="itemId" value="<%= t.getId() %>">
+		                                	<input type="hidden" name="itemName" value="<%= t.getName() %>">
+		                                	<input type="hidden" name="itemPrice" value="<%= t.getPrice() %>">
+		                                	<input type="hidden" name="checkFunc" value="buyItemById">
+		                            	</form>
 		                            </div>
+		                            
 		                        </div>
 		                    </div>
-	                    <%
+	                    <% 
+	                    i++;
 	                    } 
                     }
                     %>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$64.99</h4>
-                                <h4><a href="#">Second Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">12 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$74.99</h4>
-                                <h4><a href="#">Third Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">31 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$84.99</h4>
-                                <h4><a href="#">Fourth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">6 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$94.99</h4>
-                                <h4><a href="#">Fifth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">18 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <h4><a href="#">Like this template?</a>
-                        </h4>
-                        <p>If you like this template, then check out <a target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this tutorial</a> on how to build a working review system for your online store!</p>
-                        <a class="btn btn-primary" target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Tutorial</a>
-                    </div>
 
                 </div>
 

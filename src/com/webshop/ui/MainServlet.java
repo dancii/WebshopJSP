@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.webshop.bo.CartItem;
 import com.webshop.bo.ItemHandler;
 import com.webshop.bo.ItemInfo;
+import com.webshop.bo.ShoppingCart;
 import com.webshop.bo.UserHandler;
 
 /**
@@ -59,18 +61,43 @@ public class MainServlet extends HttpServlet {
 				session.setMaxInactiveInterval(60*15);
 				response.sendRedirect("index.jsp");
 			}
-		}else if(checkFunc.equals("register")){
-			
 		}else if(checkFunc.equals("searchItemByName")){
+			
 			String searchItemByName=request.getParameter("search");
 			ArrayList<ItemInfo> items = ItemHandler.getItemByName(searchItemByName);
 			if(items.isEmpty()){
-				System.out.println("Items empty");
+				response.sendRedirect("search.jsp");
 			}else{
 				request.setAttribute("itemsList", items);
 				RequestDispatcher rd=request.getRequestDispatcher("/search.jsp");
 				rd.forward(request,response);
+			}
+			
+		}else if(checkFunc.equals("buyItemById")){
+			String buyItemId=request.getParameter("itemId");
+			String buyItemName=request.getParameter("itemName");
+			String buyItemPrice=request.getParameter("itemPrice");
+			ShoppingCart.addItem(new CartItem(Integer.parseInt(buyItemId), buyItemName, Float.parseFloat(buyItemPrice)));
+			
+			session.setAttribute("shoppingCart", ShoppingCart.getCartList());
+			session.setMaxInactiveInterval(60*5);
+			response.sendRedirect("shoppingCart.jsp");
+		}else if(checkFunc.equals("removeItemCart")){
+			String removeCartItemId=request.getParameter("itemIdRemove");
+			
+			ShoppingCart.removeItem(Integer.parseInt(removeCartItemId));
+			response.sendRedirect("shoppingCart.jsp");
+		}else if(checkFunc.equals("findItemsByCategory")){
+			String categoryName=request.getParameter("searchItemByCategory");
+			ArrayList<ItemInfo> items=ItemHandler.getItemByCategory(categoryName);
+			
+			if(items.isEmpty()){
 				response.sendRedirect("search.jsp");
+			}else{
+				request.setAttribute("itemsList", items);
+				request.setAttribute("categoryName", items.get(0).getCategory());
+				RequestDispatcher rd=request.getRequestDispatcher("/search.jsp");
+				rd.forward(request,response);
 			}
 			
 		}

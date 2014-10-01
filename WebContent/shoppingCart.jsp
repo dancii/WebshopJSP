@@ -1,7 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=US-ASCII"
-    pageEncoding="US-ASCII"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+<%@page import="com.webshop.bo.CartItem" %>
+<%@page import="com.webshop.bo.ShoppingCart" %>
+<%@page import="java.util.*" %>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
 
     <meta charset="utf-8">
@@ -45,8 +49,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                <%if(session.getAttribute("username")==null || session.getAttribute("username")==""){ %>
                 	<li>
                 		<a href="login.jsp">Login</a>
+                	</li>
+                <%}else{ %>
+                	<li>
+                		<a href="logout.jsp">Logout</a>
+                <%} %>
                 	</li>
                     <li>
                         <a href="#">About</a>
@@ -55,13 +65,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
-                    </li>
-                    <li>
-                    	<input type="text" name="search" >
-                    </li>
-                    <li>
-                    	<input type="submit" name="searchBtn">
+                        <a href="shoppingCart.jsp">Chopping cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -74,32 +78,65 @@
     <div class="container">
 
         <div class="row">
-
-            <div class="col-md-3">
-                <p class="lead">Shop Name</p>
-                <div class="list-group">
-                    <a href="#" class="list-group-item">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
-                </div>
-            </div>
-
+            <div class="col-md-4">
+            	<form action="MainServlet" method="POST">
+                 	<input type="text" name="search" >
+                 	<input type="submit" name="searchBtn" value="Search">
+					<input type="hidden" name="checkFunc" value="searchItemByName">
+                </form>
+			</div>
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
-	                <form action="MainServlet">
-	                	<h1>Register</h1>
-						Username: <input type="text" name="username"><br>
-						Password: <input type="password" name="password"><br>
-						Firstname: <input type="text" name="name"><br>
-						Lastname: <input type="text" name="lastname"><br>
-						<input type="hidden" name="checkFunc" value="register">
-						<input type="submit" name="Register"><br>
-	               	</form>
-               	</div>
-               	
+
+                    <div class="col-md-12">
+                        <h1>WELCOME TO OUR WEBSHOP</h1>
+                    </div>
+
+                </div>
+				<%
+					if(session.getAttribute("shoppingCart")==null){
+				%>
+                <div class="row">
+				
+							<h5>Shopping cart is empty</h5>
+						<%
+					}else{
+						
+						ArrayList<CartItem> cartItems=(ArrayList<CartItem>) session.getAttribute("shoppingCart");
+	                	Iterator iter=cartItems.iterator();
+	                	int i=0;
+	                	while(iter.hasNext()){
+	                		CartItem ct=(CartItem) iter.next();
+						%>
+						
+		                    <div class="col-sm-4 col-lg-4 col-md-4">
+		                        <div class="thumbnail">
+		                            <div class="caption">
+		                                <h4 class="pull-right"><%= ct.getItemPrice() %> &ETH</h4>
+		                                <h4><a href="#"><%= ct.getItemName() %></a>
+		                                </h4>
+		                                <form action="MainServlet" method="POST">
+		                                	<input type="submit" name="remove" value="Remove">
+		                                	<input type="hidden" name="itemIdRemove" value="<%= i %>">
+		                                	<input type="hidden" name="checkFunc" value="removeItemCart">
+		                            	</form>
+		                            </div>
+		                            
+		                        </div>
+		                    </div>
+	          
+
+                </div>
+         		 <% 
+         		 i++;
+	                    } 
+                    }
+                    %>
             </div>
+
         </div>
+
     </div>
     <!-- /.container -->
 

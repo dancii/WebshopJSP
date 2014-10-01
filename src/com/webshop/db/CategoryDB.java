@@ -3,41 +3,39 @@ package com.webshop.db;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-import com.webshop.bo.User;
+import com.webshop.bo.Category;
 
-public class UserDB extends User{
+public class CategoryDB extends Category{
 	
 	static Connection con = null;
 	static ResultSet rs = null;
-	static UserDB userdb=null;
+	static ArrayList<Category> categoryList = null;
 	static DBManager dbManager=null;
-	
-	public UserDB(int id, String username, String password, String email, String name, String lastname){
-		super(id, username,password,email,name,lastname);
+
+	public CategoryDB(int id, String category) {
+		super(id, category);
+		// TODO Auto-generated constructor stub
 	}
 	
-	public static UserDB checkIfLegit(String username, String password){
+	public static ArrayList<Category> getAllCategories(){
 		Statement stmt=null;
+		String searchQuery="SELECT * FROM categories";
+		categoryList = new ArrayList<Category>();
 		
-		String searchQuery="SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'";
 		try{
 			dbManager=DBManager.checkInstance();
 			con=dbManager.getFreeConnection();
 			stmt=con.createStatement();
 			rs=stmt.executeQuery(searchQuery);
 			
-			boolean more = rs.next();
-			
-			if(!more){
-				userdb=null;
-			}else if(more){
-				userdb=new UserDB(rs.getInt("id"),rs.getString("username"),rs.getString("password"), rs.getString("email"),rs.getString("name"),rs.getString("lastname"));
+			while(rs.next()){
+				categoryList.add(new Category(rs.getInt("id"),rs.getString("name")));
 			}
-			
-			
+			//System.out.println(items.get(0).getName());
 		}catch(Exception e){
-
+			System.out.println("DB fail CATEGORY");
 		}finally{
 		    if (rs != null)	{
 	            try {
@@ -55,13 +53,14 @@ public class UserDB extends User{
 		    
 		    if (con != null) {
 	            try {
-	            	dbManager.returnBusyConnection(con);
+	               dbManager.returnBusyConnection(con);
 	            } catch (Exception e) {
 	            
 	            }
 	            con = null;
 	        }
 		}
-		return userdb;
+		return categoryList;
 	}
+	
 }

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<%@page import="com.webshop.bo.ItemInfo" %>
+<%@page import="com.webshop.bo.Category" %>
+<%@page import="com.webshop.bo.CategoryHandler" %>
+<%@page import="com.webshop.bo.ShoppingCart" %>
+<%@page import="java.util.*" %>
+
 <head>
 
     <meta charset="utf-8">
@@ -60,7 +66,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="shoppingCart.jsp">Chopping cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -77,9 +83,24 @@
             <div class="col-md-3">
                 <p class="lead">Shop Name</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
+                  <%
+					ArrayList<Category> categories= CategoryHandler.getAllCategories();
+					Iterator<Category> iter2 = categories.iterator();
+
+					while(iter2.hasNext()){
+						Category t = iter2.next();
+					%>
+						<div class="list-group-item">
+						<form action="MainServlet" method="POST">
+                                Search by <input type="submit" name="searchItemByCategory" value="<%=t.getCategory() %>">
+                                <input type="hidden" name="itemId" value="<%= t.getId() %>">
+                                <input type="hidden" name="itemName" value="<%= t.getCategory() %>">
+								<input type="hidden" name="checkFunc" value="findItemsByCategory">
+                   		</form>
+						</div>
+                  	<%
+					}
+					%>
                 </div>
             </div>
             <div class="col-md-4">
