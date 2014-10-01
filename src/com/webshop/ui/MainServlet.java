@@ -83,11 +83,16 @@ public class MainServlet extends HttpServlet {
 			session.setMaxInactiveInterval(60*5);
 			response.sendRedirect("shoppingCart.jsp");
 		}else if(checkFunc.equals("removeItemCart")){
+			
 			String removeCartItemId=request.getParameter("itemIdRemove");
 			
 			ShoppingCart.removeItem(Integer.parseInt(removeCartItemId));
+			if(ShoppingCart.getCartList().isEmpty()){
+				session.setAttribute("shoppingCart", null);
+			}
 			response.sendRedirect("shoppingCart.jsp");
 		}else if(checkFunc.equals("findItemsByCategory")){
+			
 			String categoryName=request.getParameter("searchItemByCategory");
 			ArrayList<ItemInfo> items=ItemHandler.getItemByCategory(categoryName);
 			

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
+<%@page import="com.webshop.bo.ShoppingCart" %>
 <% if(session.getAttribute("username")!=null){
 	response.sendRedirect("index.jsp");
 } %>
@@ -57,13 +58,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
-                    </li>
-                    <li>
-                    	<input type="text" name="search" >
-                    </li>
-                    <li>
-                    	<input type="submit" name="searchBtn">
+                        <a href="shoppingCart.jsp">Shopping Cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -77,15 +72,6 @@
 
         <div class="row">
 
-            <div class="col-md-3">
-                <p class="lead">Shop Name</p>
-                <div class="list-group">
-                    <a href="#" class="list-group-item">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
-                </div>
-            </div>
-
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
@@ -96,7 +82,7 @@
 	                	<%} %>
 						<input type="text" name="username"><br>
 						<input type="password" name="password">
-						<input type="submit" name="login"><br>
+						<input type="submit" name="login" value="Login"><br>
 						<input type="hidden" name="checkFunc" value="login">
 						<a href="register.jsp">Register here!</a>
 	               	</form>

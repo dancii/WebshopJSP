@@ -2,6 +2,6 @@
     pageEncoding="ISO-8859-1"%>
 <% 
 session.setAttribute("username", null);
-session.invalidate();
+session.removeAttribute("username");
 response.sendRedirect("index.jsp");
 %>

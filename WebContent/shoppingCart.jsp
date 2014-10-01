@@ -65,7 +65,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="shoppingCart.jsp">Chopping cart(<%= ShoppingCart.countItem() %>)</a>
+                        <a href="shoppingCart.jsp">Shopping cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -78,13 +78,6 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-4">
-            	<form action="MainServlet" method="POST">
-                 	<input type="text" name="search" >
-                 	<input type="submit" name="searchBtn" value="Search">
-					<input type="hidden" name="checkFunc" value="searchItemByName">
-                </form>
-			</div>
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
@@ -93,6 +86,14 @@
                         <h1>WELCOME TO OUR WEBSHOP</h1>
                     </div>
 
+					<div class="col-md-9">
+		           Search items by name
+		            	<form action="MainServlet" method="POST">
+		                 	<input type="text" name="search" >
+		                 	<input type="submit" name="searchBtn" value="Search">
+							<input type="hidden" name="checkFunc" value="searchItemByName">
+		                </form>
+					</div>
                 </div>
 				<%
 					if(session.getAttribute("shoppingCart")==null){
@@ -134,7 +135,19 @@
                     }
                     %>
             </div>
-
+            <% if(session.getAttribute("username")!=null && ShoppingCart.countItem()>0){%>
+            	
+            
+			<div class="col-md-9">
+				<form action="">
+					<input type="submit" name="checkout" value="Checkout">
+				</form>
+			</div>
+            <%}else if(session.getAttribute("username")!=null && ShoppingCart.countItem()<=0 || session.getAttribute("username")==null && ShoppingCart.countItem()<=0){%>
+            	
+            <%}else{%>
+            	<h5>Please sign in to check out</h5>
+            <%} %>
         </div>
 
     </div>

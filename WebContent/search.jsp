@@ -67,7 +67,7 @@
                         <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="shoppingCart.jsp">Chopping cart(<%= ShoppingCart.countItem() %>)</a>
+                        <a href="shoppingCart.jsp">Shopping cart(<%= ShoppingCart.countItem() %>)</a>
                     </li>
                 </ul>
             </div>
@@ -104,13 +104,7 @@
 					%>
 				</div>
 			</div>
-            <div class="col-md-4">
-            	<form action="MainServlet" method="POST">
-                 	<input type="text" name="search" >
-                 	<input type="submit" name="searchBtn" value="Search">
-					<input type="hidden" name="checkFunc" value="searchItemByName">
-                </form>
-			</div>
+ 
             <div class="col-md-9">
 
                 <div class="row carousel-holder">
@@ -119,6 +113,14 @@
                         <h1>Search results</h1>
                     </div>
 
+           <div class="col-md-9">
+           Search items by name
+            	<form action="MainServlet" method="POST">
+                 	<input type="text" name="search" >
+                 	<input type="submit" name="searchBtn" value="Search">
+					<input type="hidden" name="checkFunc" value="searchItemByName">
+                </form>
+			</div>
                 </div>
 
                 <div class="row">
