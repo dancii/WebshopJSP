@@ -1,7 +1,7 @@
 
 <%@page import="com.webshop.bo.ItemInfo" %>
 <%@page import="java.util.*" %>
-<%@page import="com.webshop.bo.Category" %>
+<%@page import="com.webshop.bo.CategoryInfo" %>
 <%@page import="com.webshop.bo.CategoryHandler" %>
 <%@page import="com.webshop.bo.ShoppingCart" %>
 
@@ -84,11 +84,11 @@
             <div class="col-md-3">
                 <p class="lead">Categories</p>
                 <div class="list-group">
-                  <%ArrayList<Category> categories= CategoryHandler.getAllCategories();
-					Iterator<Category> iter2 = categories.iterator();
+                  <%ArrayList<CategoryInfo> categories= CategoryHandler.getAllCategories();
+					Iterator<CategoryInfo> iter2 = categories.iterator();
 
 					while(iter2.hasNext()){
-						Category t = iter2.next();
+						CategoryInfo t = iter2.next();
 						
 					%>
 						<div class="list-group-item">
